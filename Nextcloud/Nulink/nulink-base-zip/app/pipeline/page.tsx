@@ -28,7 +28,8 @@ export default function Pipeline() {
   useEffect(() => { load() }, [])
 
   async function salvar() {
-    await supabase.from('deals').insert([{ ...form, valor: +form.valor, probabilidade: +form.probabilidade }])
+    const dadosDeal = Object.fromEntries(Object.entries({ ...form, valor: +form.valor, probabilidade: +form.probabilidade }).map(([k,v]) => [k, v === '' ? null : v]))
+    await supabase.from('deals').insert([dadosDeal])
     setModal(false); setForm({ titulo:'', empresa_id:'', etapa:'prospeccao', valor:0, probabilidade:50, notas:'' }); load()
   }
 

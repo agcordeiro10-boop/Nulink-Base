@@ -20,7 +20,8 @@ export default function Profissionais() {
   }
   useEffect(()=>{load()},[search])
   async function salvar() {
-    await supabase.from('profissionais').insert([{ ...form, especialidades: form.especialidades.split(',').map((s:string)=>s.trim()).filter(Boolean), certificacoes: form.certificacoes.split(',').map((s:string)=>s.trim()).filter(Boolean) }])
+    const dadosProf = Object.fromEntries(Object.entries({ ...form, especialidades: form.especialidades.split(',').map((s:string)=>s.trim()).filter(Boolean), certificacoes: form.certificacoes.split(',').map((s:string)=>s.trim()).filter(Boolean) }).map(([k,v]) => [k, v === '' ? null : v]))
+    await supabase.from('profissionais').insert([dadosProf])
     setModal(false); setForm({ nome:'', email:'', telefone:'', whatsapp:'', cidade:'', estado:'SP', especialidades:'', certificacoes:'', status:'ativo', notas:'' }); load()
   }
   return (

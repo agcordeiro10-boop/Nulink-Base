@@ -14,7 +14,8 @@ export default function Tarefas() {
   async function load() { const { data } = await supabase.from('tarefas').select('*').order('data_vencimento',{ascending:true}); setData(data||[]) }
   useEffect(()=>{load()},[])
   async function salvar() {
-    await supabase.from('tarefas').insert([form]); setModal(false)
+    const dadosTarefa = Object.fromEntries(Object.entries(form).map(([k,v]) => [k, v === '' ? null : v]))
+    await supabase.from('tarefas').insert([dadosTarefa]); setModal(false)
     setForm({ titulo:'', descricao:'', prioridade:'media', status:'pendente', data_vencimento:'' }); load()
   }
   async function toggleStatus(t: any) {

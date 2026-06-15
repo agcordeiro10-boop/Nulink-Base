@@ -3,7 +3,14 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  db: { schema: 'public' },
+  global: {
+    headers: {
+      'Prefer': 'return=representation'
+    }
+  }
+})
 
 export type Usuario = {
   id: string; nome: string; email: string; role: string; avatar_url?: string; ativo: boolean; created_at: string

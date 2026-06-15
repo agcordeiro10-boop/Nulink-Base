@@ -28,10 +28,11 @@ export default function Empresas() {
   useEffect(() => { load() }, [search, filterStatus])
 
   async function salvar() {
+    const dados = Object.fromEntries(Object.entries(form).map(([k,v]) => [k, v === '' ? null : v]))
     if (editing) {
-      await supabase.from('empresas').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editing.id)
+      await supabase.from('empresas').update({ ...dados, updated_at: new Date().toISOString() }).eq('id', editing.id)
     } else {
-      await supabase.from('empresas').insert([form])
+      await supabase.from('empresas').insert([dados])
     }
     setModal(false); setEditing(null); setForm({ nome:'', cnpj:'', segmento:'', porte:'', cidade:'', estado:'SP', telefone:'', email_contato:'', status:'lead', mrr:0, origem:'', notas:'' })
     load()

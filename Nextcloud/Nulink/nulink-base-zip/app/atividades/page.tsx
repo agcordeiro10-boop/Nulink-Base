@@ -22,7 +22,8 @@ export default function Atividades() {
   }
   useEffect(()=>{load()},[])
   async function salvar() {
-    await supabase.from('atividades').insert([form]); setModal(false)
+    const dadosAtv = Object.fromEntries(Object.entries(form).map(([k,v]) => [k, v === '' ? null : v]))
+    await supabase.from('atividades').insert([dadosAtv]); setModal(false)
     setForm({ tipo:'nota', titulo:'', descricao:'', empresa_id:'', data_atividade: new Date().toISOString().slice(0,16) }); load()
   }
   return (
